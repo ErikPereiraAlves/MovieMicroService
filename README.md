@@ -57,8 +57,7 @@ Basic authorization: There are 2 users created in the microservice:  Jose (passw
 
 Json example: Movie with ID =3 and comments by user Jose and Maria.
 
-{"movieId":3,"movieTitle":"Matrix","movieDescription":"Action movie","movieComments":[{"movieId":3,"movieCommentId":1,"movieComment":"Futuristic movie","userId":1},{"movieId":3,"movieCommentId":2,"movieComment":"I liked it.","userId":2}]}
-
+[{"movieId":3,"movieTitle":"Matrix","movieDescription":"Action movie","movieComments":[{"movieId":3,"movieCommentId":1,"movieComment":"Futuristic movie","userId":1},{"movieId":3,"movieCommentId":2,"movieComment":"I liked it.","userId":2}]}]
 
 ### Persist a movie's comments:
 
