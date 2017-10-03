@@ -60,7 +60,7 @@ class ServiceController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Movie id was not found in parameters.");
         }
 
-        return call(ServicesAvailable.DETAILS_FETCH, request, movieId);
+        return endpoint(ServicesAvailable.DETAILS_FETCH, request, movieId);
 
     }
 
@@ -68,7 +68,7 @@ class ServiceController {
     @ResponseBody
     public ResponseEntity<Object> persistMovieDetails(final HttpServletRequest request) {
 
-        return call(ServicesAvailable.DETAILS_PERSIST, request, null);
+        return endpoint(ServicesAvailable.DETAILS_PERSIST, request, null);
 
     }
 
@@ -76,11 +76,11 @@ class ServiceController {
     @ResponseBody
     public ResponseEntity<Object> persistMovieComments(final HttpServletRequest request) {
 
-        return call(COMMENTS_PERSIST, request, null);
+        return endpoint(COMMENTS_PERSIST, request, null);
 
     }
 
-    private ResponseEntity<Object> call(ServicesAvailable serviceName, HttpServletRequest request, String movieId) {
+    private ResponseEntity<Object> endpoint(ServicesAvailable serviceName, HttpServletRequest request, String movieId) {
 
 
         String[] basicAuth = getBasicAuthData(request);
