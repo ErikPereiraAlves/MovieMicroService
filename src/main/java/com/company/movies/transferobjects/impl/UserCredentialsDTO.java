@@ -14,6 +14,10 @@ public class UserCredentialsDTO {
 
     private UserUtil.UserRoles role;
 
+    public UserCredentialsDTO() {
+
+    }
+
     public UserCredentialsDTO(String userName, int userId, String userPassword, UserUtil.UserRoles role) {
         this.userName = userName;
         this.userId = userId;

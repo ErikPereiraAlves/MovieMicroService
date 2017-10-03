@@ -11,15 +11,15 @@ public class LFUCache {
 
     private static LFUCache instance = null;
     private static int initialCapacity = 10;
-    private static LinkedHashMap<Integer, CacheEntry> cacheMap = new LinkedHashMap<Integer, CacheEntry>();
+    private static LinkedHashMap<Integer, CacheEntry> cacheMap = new LinkedHashMap<>();
 
 
-    protected LFUCache() {
+    private LFUCache() {
 
     }
 
     public LFUCache(int initialCapacity) {
-        this.initialCapacity = initialCapacity;
+        LFUCache.initialCapacity = initialCapacity;
     }
 
     public static LFUCache getInstance() {
@@ -31,10 +31,8 @@ public class LFUCache {
     }
 
     public static boolean isFull() {
-        if (cacheMap.size() == initialCapacity)
-            return true;
+        return cacheMap.size() == initialCapacity;
 
-        return false;
     }
 
     public void addCacheEntry(int key, MovieDetailsDTO movie) {
@@ -92,7 +90,7 @@ public class LFUCache {
             return movie;
         }
 
-        public void setMovie(MovieDetailsDTO movie) {
+        void setMovie(MovieDetailsDTO movie) {
             this.movie = movie;
         }
 
@@ -100,7 +98,7 @@ public class LFUCache {
             return frequency;
         }
 
-        public void setFrequency(int frequency) {
+        void setFrequency(int frequency) {
             this.frequency = frequency;
         }
 

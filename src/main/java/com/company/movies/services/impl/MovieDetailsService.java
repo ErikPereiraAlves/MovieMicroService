@@ -71,7 +71,7 @@ public class MovieDetailsService {
 
 
     @Async
-    public Future<HttpStatus> save(Collection<MovieDetailsDTO> collection) {
+    private Future<HttpStatus> save(Collection<MovieDetailsDTO> collection) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         try {
@@ -88,28 +88,28 @@ public class MovieDetailsService {
     }
 
     @Async
-    public Future<String> fetchMovie(int movieId) {
+    private Future<String> fetchMovie(int movieId) {
 
         String movieDetails = null;
         try {
             movieDetails = movieDao.fetchMovieDetails(movieId);
 
         } catch (ServiceException e) {
-            LOGGER.error("Error occurred while fetching movie details for: Log(s) received={}", movieDetails, e);
+            LOGGER.error("Error occurred while fetching movie details for: Log(s) received={}", e);
         }
         return new AsyncResult<>(movieDetails);
 
     }
 
     @Async
-    public Future<String> fetchAllMovies() {
+    private Future<String> fetchAllMovies() {
 
         String movieDetails = null;
         try {
             movieDetails = movieDao.fetchMoviesDetails();
 
         } catch (ServiceException e) {
-            LOGGER.error("Error occurred while fetching movie details for: Log(s) received={}", movieDetails, e);
+            LOGGER.error("Error occurred while fetching movie details for: Log(s) received={}", e);
         }
         return new AsyncResult<>(movieDetails);
 

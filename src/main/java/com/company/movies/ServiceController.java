@@ -25,7 +25,7 @@ import static com.company.movies.utils.ServicesUtil.ServicesAvailable.COMMENTS_P
 
 @RestController
 @RequestMapping(value = BASE_URI + VERSION_URI)
-public class ServiceController {
+class ServiceController {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceController.class);
@@ -37,6 +37,19 @@ public class ServiceController {
     /*
      Service calls.
      */
+
+    private static String[] getBasicAuthData(HttpServletRequest request) {
+
+        String[] values = null;
+        final String authorization = request.getHeader("Authorization");
+        if (authorization != null && authorization.startsWith("Basic")) {
+            String base64Credentials = authorization.substring("Basic".length()).trim();
+            String credentials = new String(Base64.getDecoder().decode(base64Credentials), Charset.forName("UTF-8"));
+            values = credentials.split(":", 2);
+        }
+
+        return values;
+    }
 
     @RequestMapping(value = FETCH + DETAILS_URI, method = RequestMethod.POST)
     @ResponseBody
@@ -50,7 +63,6 @@ public class ServiceController {
         return call(ServicesAvailable.DETAILS_FETCH, request, movieId);
 
     }
-
 
     @RequestMapping(value = PERSIST + DETAILS_URI, method = RequestMethod.POST)
     @ResponseBody
@@ -68,53 +80,37 @@ public class ServiceController {
 
     }
 
-
     private ResponseEntity<Object> call(ServicesAvailable serviceName, HttpServletRequest request, String movieId) {
 
+
         String[] basicAuth = getBasicAuthData(request);
-
-        if (null == basicAuth || basicAuth.length != 2) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User credentials are not found, please check user Id and/or password.");
-        }
-
-        final String loggedInUser = basicAuth[0].trim();
-        final String loggedInUserPwd = basicAuth[1].trim();
-
-        ResponseEntity<Object> responseEntity;
-
-        if (UserUtil.userCredentialsMissing(loggedInUser, loggedInUserPwd)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User credentials are not found.");
-        }
-
-        UserCredentialsDTO user = UserUtil.validateUserCredentials(loggedInUser, loggedInUserPwd);
+        UserCredentialsDTO user = UserUtil.validateUserHttpRequest(basicAuth);
 
         if (null == user) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User [" + loggedInUser + "] credentials are not authenticated, please check.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User credentials are not authenticated, please check.");
         }
 
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status;
         String result;
         switch (serviceName) {
             case ALL_DETAILS_FETCH:
 
                 result = movieDetailsService.retrieveAllMovies(user);
                 if (null != result) {
-                    responseEntity = ResponseEntity.status(HttpStatus.OK).body(result);
+                    return ResponseEntity.status(HttpStatus.OK).body(result);
                 } else {
-                    responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movies database not found.");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movies database not found.");
                 }
 
-                break;
 
             case DETAILS_FETCH:
                 String movieJson = movieDetailsService.retrieveSingleMovie(user, Integer.parseInt(movieId));
                 if (null != movieJson) {
-                    responseEntity = ResponseEntity.status(HttpStatus.OK).body(movieJson);
+                    return ResponseEntity.status(HttpStatus.OK).body(movieJson);
                 } else {
-                    responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie with following id" + movieId + " was not found in the system.");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie with following id" + movieId + " was not found in the system.");
                 }
 
-                break;
 
             case DETAILS_PERSIST:
 
@@ -122,19 +118,18 @@ public class ServiceController {
                     try {
                         status = movieDetailsService.persistMovies(JsonUtil.readJsonFromRequest(request), user);
                         if (status == HttpStatus.OK) {
-                            responseEntity = ResponseEntity.status(HttpStatus.OK).body("Movie(s) persisted successfully.");
+                            return ResponseEntity.status(HttpStatus.OK).body("Movie(s) persisted successfully.");
                         } else {
-                            responseEntity = ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body("One of more movies failed to be persisted.");
+                            return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body("One of more movies failed to be persisted.");
                         }
                     } catch (ServiceException e) {
-                        responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
                     }
 
                 } else {
-                    responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only ADMIN users have authority to persist data.");
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only ADMIN users have authority to persist data.");
                 }
 
-                break;
 
             case COMMENTS_PERSIST:
 
@@ -143,40 +138,27 @@ public class ServiceController {
                         status = movieCommentsService.persistComments(JsonUtil.readJsonFromRequest(request), user);
 
                         if (status == HttpStatus.OK) {
-                            responseEntity = ResponseEntity.status(HttpStatus.OK).body("All comments inserted successfully");
+                            return ResponseEntity.status(HttpStatus.OK).body("All comments inserted successfully");
                         } else {
-                            responseEntity = ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body("One of more comments failed to be persisted.");
+                            return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body("One of more comments failed to be persisted.");
                         }
 
                     } catch (ServiceException e) {
-                        responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 
                     }
                 } else {
-                    responseEntity = ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only ADMIN users have authority to persist data.");
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only ADMIN users have authority to persist data.");
                 }
 
 
-                break;
-
             default:
-                responseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service requested was not found.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service requested was not found.");
 
         }
 
-        return responseEntity;
+
     }
 
-    private String[] getBasicAuthData(HttpServletRequest request) {
 
-        String[] values = null;
-        final String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.startsWith("Basic")) {
-            String base64Credentials = authorization.substring("Basic".length()).trim();
-            String credentials = new String(Base64.getDecoder().decode(base64Credentials), Charset.forName("UTF-8"));
-            values = credentials.split(":", 2);
-        }
-
-        return values;
-    }
 }

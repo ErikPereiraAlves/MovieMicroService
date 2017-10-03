@@ -19,10 +19,10 @@ import java.util.Collections;
 
 public class JsonUtil {
 
-    public static final Type MOVIE_DETAILS_COLLECTION_TYPE_TOKEN = new TypeToken<Collection<MovieDetailsDTO>>() {
+    private static final Type MOVIE_DETAILS_COLLECTION_TYPE_TOKEN = new TypeToken<Collection<MovieDetailsDTO>>() {
     }.getType();
 
-    public static final Type MOVIE_COMMENTS_COLLECTION_TYPE_TOKEN = new TypeToken<Collection<MovieCommentsDTO>>() {
+    private static final Type MOVIE_COMMENTS_COLLECTION_TYPE_TOKEN = new TypeToken<Collection<MovieCommentsDTO>>() {
     }.getType();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);

@@ -8,11 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Database {
 
-    public ConcurrentHashMap<Integer, UserCredentialsDTO> getUserData();
+    ConcurrentHashMap<Integer, UserCredentialsDTO> getUserData();
 
-    public UserCredentialsDTO getUserData(String userName, String userPwd);
+    UserCredentialsDTO getUserData(String userName, String userPwd);
 
-    public ConcurrentHashMap<Integer, MovieDetailsDTO> getMovieData();
+    ConcurrentHashMap<Integer, MovieDetailsDTO> getMovieData();
 
 
 }

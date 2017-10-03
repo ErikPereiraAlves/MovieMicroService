@@ -24,7 +24,20 @@ public class UserUtil {
 
     }
 
-    public static UserCredentialsDTO validateUserCredentials(String loggedInUser, String loggedInUserPwd) {
+    public static UserCredentialsDTO validateUserHttpRequest(String[] basicAuth) {
+
+        if (null == basicAuth || basicAuth.length != 2 || UserUtil.userCredentialsMissing(basicAuth[0].trim(), basicAuth[1].trim())) {
+            return null;
+
+        } else {
+            return UserUtil.validateUserCredentials(basicAuth[0].trim(), basicAuth[1].trim());
+        }
+
+
+    }
+
+
+    private static UserCredentialsDTO validateUserCredentials(String loggedInUser, String loggedInUserPwd) {
 
         UserCredentialsDTO user = InMemoryDatabase.getInstance().getUserData(loggedInUser, loggedInUserPwd);
 
@@ -37,14 +50,14 @@ public class UserUtil {
 
     }
 
-    public static boolean userCredentialsMissing(String loggedInUserId, String loggedInUserPwd) {
+    private static boolean userCredentialsMissing(String loggedInUserId, String loggedInUserPwd) {
 
         return StringUtils.isAnyBlank(loggedInUserId, loggedInUserPwd);
     }
 
-    public static enum UserRoles {
+    public enum UserRoles {
         ADMIN,
-        USER;
+        USER
 
     }
 

@@ -24,7 +24,7 @@ public class JsonUtilTest {
     private static final Gson GSON = new Gson();
     private MockHttpServletRequest request;
 
-    public static boolean isJSONValid(String jsonInString) {
+    private static boolean isJSONValid(String jsonInString) {
         try {
             GSON.fromJson(jsonInString, Object.class);
             return true;
@@ -57,17 +57,17 @@ public class JsonUtilTest {
 
 
         Collection<MovieDetailsDTO> collection = JsonUtil.deserializeMovieDetails(detailsJson);
-        assertTrue(null!=collection && collection.size()>0);
+        assertTrue(null != collection && collection.size() > 0);
 
     }
 
     @Test
     public void shouldCorrectlyDeserializeMovieComments() throws Exception {
         Collection<MovieCommentsDTO> collection = JsonUtil.deserializeMovieComments(commentsJson);
-        assertTrue(null!=collection && collection.size() >0);
+        assertTrue(null != collection && collection.size() > 0);
     }
 
-    public void SetupDetailsPersistRequest() throws Exception {
+    private void SetupDetailsPersistRequest() throws Exception {
         request = new MockHttpServletRequest();
         request.setContentType("application/json");
         request.setMethod("POST");
@@ -80,7 +80,7 @@ public class JsonUtilTest {
         }
     }
 
-    public void SetupCommentsPersistRequest() throws Exception {
+    private void SetupCommentsPersistRequest() throws Exception {
         request = new MockHttpServletRequest();
         request.setContentType("application/json");
         request.setMethod("POST");

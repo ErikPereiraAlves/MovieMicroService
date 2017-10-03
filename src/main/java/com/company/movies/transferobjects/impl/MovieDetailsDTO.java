@@ -65,4 +65,6 @@ public class MovieDetailsDTO implements MovieDTO {
     public void setMovieComments(Set<MovieCommentsDTO> movieComments) {
         this.movieComments = movieComments;
     }
+
+
 }

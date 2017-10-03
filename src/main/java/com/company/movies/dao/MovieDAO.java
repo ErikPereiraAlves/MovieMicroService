@@ -11,11 +11,11 @@ import java.util.Collection;
 public interface MovieDAO {
 
 
-    public boolean persistMovieDetails(Collection<MovieDetailsDTO> collection) throws ServiceException;
+    boolean persistMovieDetails(Collection<MovieDetailsDTO> collection) throws ServiceException;
 
-    public boolean persistMovieComments(Collection<MovieCommentsDTO> collection) throws ServiceException;
+    boolean persistMovieComments(Collection<MovieCommentsDTO> collection) throws ServiceException;
 
-    public String fetchMoviesDetails() throws ServiceException;
+    String fetchMoviesDetails() throws ServiceException;
 
-    public String fetchMovieDetails(int movieId) throws ServiceException;
+    String fetchMovieDetails(int movieId) throws ServiceException;
 }

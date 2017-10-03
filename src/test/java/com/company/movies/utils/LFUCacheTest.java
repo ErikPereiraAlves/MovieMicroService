@@ -43,13 +43,13 @@ public class LFUCacheTest {
     public void shouldGetLFUKey() throws Exception {
 
         int key = cache.getLFUKey();
-        Assert.assertTrue(key !=0);
+        Assert.assertTrue(key != 0);
     }
 
     @Test
     public void shouldNotBeIsFull() throws Exception {
 
-        boolean isFull = cache.isFull();
+        boolean isFull = LFUCache.isFull();
         Assert.assertThat(isFull, is(false));
 
     }
@@ -68,7 +68,7 @@ public class LFUCacheTest {
         cache.addCacheEntry(100000000, movie);
         cache.addCacheEntry(2, movie);
 
-        boolean isFull = cache.isFull();
+        boolean isFull = LFUCache.isFull();
         Assert.assertThat(isFull, is(true));
 
     }

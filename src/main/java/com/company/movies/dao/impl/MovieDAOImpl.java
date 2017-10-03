@@ -45,11 +45,7 @@ public class MovieDAOImpl implements MovieDAO {
                 }
         );
 
-        if (countDetailsPersisted == collection.size()) {
-            return true;
-        } else {
-            return false;
-        }
+        return countDetailsPersisted == collection.size();
     }
 
     @Override
@@ -70,11 +66,7 @@ public class MovieDAOImpl implements MovieDAO {
                 }
         );
 
-        if (countCommentsPersisted == collection.size()) {
-            return true;
-        } else {
-            return false;
-        }
+        return countCommentsPersisted == collection.size();
 
     }
 

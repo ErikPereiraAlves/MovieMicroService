@@ -29,21 +29,12 @@ import static org.junit.Assert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceControllerTest {
 
-    private MockHttpServletRequest request;
-
-    private MovieCommentsService movieCommentsService;
-
-    private MovieDetailsService movieDetailsService;
-
-    private LFUCache cache;
-
-    UserCredentialsDTO user;
-
-    MovieDAO movieDao;
-
     private static final String detailsJson = "[{\"movieId\":100,\"movieTitle\":\"Fast and Ferious\",\"movieDescription\":\"Action movie\",\"movieComments\":[{\"movieId\":100,\"movieCommentId\":1,\"movieComment\":\"Great movie.\",\"userId\":1},{\"movieId\":100,\"movieCommentId\":2,\"movieComment\":\"I did not like it, it was too violent\",\"userId\":2},{\"movieId\":100,\"movieCommentId\":100,\"movieComment\":\"Great movie.\",\"userId\":1}]}]";
     private static final String commentsJson = "[{\"movieId\":100,\"movieCommentId\":100,\"movieComment\":\"Great movie.\",\"userId\":1}]";
-
+    private MockHttpServletRequest request;
+    private LFUCache cache;
+    private UserCredentialsDTO user;
+    private MovieDAO movieDao;
 
     @Before
     public void Setup() throws Exception {
@@ -52,8 +43,8 @@ public class ServiceControllerTest {
         request.setMethod("POST");
         cache = LFUCache.getInstance();
         user = new UserCredentialsDTO("Mario", 5, "abc", UserUtil.UserRoles.ADMIN);
-        movieDetailsService =  new MovieDetailsService();
-        movieCommentsService = new MovieCommentsService();
+        MovieDetailsService movieDetailsService = new MovieDetailsService();
+        MovieCommentsService movieCommentsService = new MovieCommentsService();
         movieDao = new MovieDAOImpl();
     }
 
@@ -99,9 +90,9 @@ public class ServiceControllerTest {
 
         MovieDetailsDTO movie = cache.getCacheEntry(100);
 
-        Set<MovieCommentsDTO>  comments = movie.getMovieComments();
+        Set<MovieCommentsDTO> comments = movie.getMovieComments();
 
-        assertThat( comments.isEmpty(), is(false));
+        assertThat(comments.isEmpty(), is(false));
 
     }
 

@@ -46,7 +46,7 @@ public class MovieCommentsService {
     }
 
     @Async
-    public Future<HttpStatus> save(Collection<MovieCommentsDTO> collection) {
+    private Future<HttpStatus> save(Collection<MovieCommentsDTO> collection) {
         HttpStatus status = HttpStatus.OK;
 
         try {

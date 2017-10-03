@@ -21,13 +21,13 @@ import static org.junit.Assert.assertThat;
 public class InMemoryDatabaseTest {
 
     private MovieDAOImpl dao;
+    private InMemoryDatabase database = InMemoryDatabase.getInstance();
 
     @Before
     public void Setup() throws Exception {
 
         dao = new MovieDAOImpl();
     }
-
 
     @Test
     public void getMovieData() throws Exception {
@@ -46,8 +46,6 @@ public class InMemoryDatabaseTest {
         assertThat(movie.getMovieId(), is(1000));
 
     }
-
-    InMemoryDatabase database = InMemoryDatabase.getInstance();
 
     @Test
     public void shouldGetUserData() throws Exception {

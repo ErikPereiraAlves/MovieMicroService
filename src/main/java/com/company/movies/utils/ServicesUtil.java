@@ -20,11 +20,11 @@ public class ServicesUtil {
     public static final String COMMENTS_URI = "/comments";
 
 
-    public static enum ServicesAvailable {
+    public enum ServicesAvailable {
         DETAILS_FETCH,
         ALL_DETAILS_FETCH,
         DETAILS_PERSIST,
-        COMMENTS_PERSIST;
+        COMMENTS_PERSIST
     }
 
 

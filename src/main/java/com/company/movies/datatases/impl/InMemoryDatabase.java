@@ -26,7 +26,7 @@ public class InMemoryDatabase implements Database {
     /* User table */
     private ConcurrentHashMap<Integer, UserCredentialsDTO> userData;
 
-    protected InMemoryDatabase() {
+    private InMemoryDatabase() {
 
     }
 
@@ -47,17 +47,13 @@ public class InMemoryDatabase implements Database {
     public MovieDetailsDTO getMovieData(int movieId) {
 
         Optional<MovieDetailsDTO> movieObject = movieData.entrySet()
-                                                         .stream()
-                                                         .filter(e -> e.getValue().getMovieId() == movieId)
-                                                         .map(Map.Entry::getValue)
-                                                         .findFirst();
+                .stream()
+                .filter(e -> e.getValue().getMovieId() == movieId)
+                .map(Map.Entry::getValue)
+                .findFirst();
 
 
-        if (!movieObject.isPresent()) {
-            return null;
-        } else {
-            return movieObject.get();
-        }
+        return movieObject.orElse(null);
 
     }
 
@@ -70,17 +66,13 @@ public class InMemoryDatabase implements Database {
     public UserCredentialsDTO getUserData(String userName, String userPwd) {
 
         Optional<UserCredentialsDTO> userObject = userData.entrySet()
-                                                          .stream()
-                                                          .filter((e) -> (e.getValue().getUserName().equals(userName) && e.getValue().getUserPassword().equals(userPwd)))
-                                                          .map(Map.Entry::getValue)
-                                                          .findFirst();
+                .stream()
+                .filter((e) -> (e.getValue().getUserName().equals(userName) && e.getValue().getUserPassword().equals(userPwd)))
+                .map(Map.Entry::getValue)
+                .findFirst();
 
 
-        if (!userObject.isPresent()) {
-            return null;
-        } else {
-            return userObject.get();
-        }
+        return userObject.orElse(null);
     }
 
     /* mock to initialize movie and user data  */
@@ -102,7 +94,7 @@ public class InMemoryDatabase implements Database {
             Set<MovieCommentsDTO> movieComments = new LinkedHashSet<>();
             movieComments.add(new MovieCommentsDTO(1, 1, "Great movie.", 1));
             movieComments.add(new MovieCommentsDTO(1, 2, "I didn't like it, it was too violent", 2));
-            MovieDetailsDTO movie = new MovieDetailsDTO(1, "Fast and Ferious", "Action movie", movieComments);
+            MovieDetailsDTO movie = new MovieDetailsDTO(1, "Fast and Furious", "Action movie", movieComments);
             movieData.put(1, movie);
             instance.addCacheEntry(1, movie);
 
